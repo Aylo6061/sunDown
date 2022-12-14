@@ -88,6 +88,7 @@ void setup(void) {
     {
       JsonObject credJson = doc.as<JsonObject>();
       WiFi.mode(WIFI_STA);
+      WiFi.setTxPower(WIFI_POWER_19_5dBm);
       WiFi.begin(credJson["ssid"].as<String>().c_str(), credJson["pwd"].as<String>().c_str());
     }
     else{
