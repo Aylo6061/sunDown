@@ -1,4 +1,4 @@
-u #if defined(ESP8266)
+#if defined(ESP8266)
   #include <ESP8266WiFi.h>
   #include <ESPAsyncTCP.h>
 #elif defined(ESP32)
