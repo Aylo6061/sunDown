@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.slidecontainer {
+  width: 100%;
+}
+
+.centered {
+	margin: auto;
+	display: block;
+	text-align: center;
+	color:  #d3d3d3;
+	font-family: "Arial";
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 72%;
+  height: 25px;
+  background: #AE81FF;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #A6E22E;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #A6E22E;
+  cursor: pointer;
+}
+
+.slider_mode {
+  -webkit-appearance: none;
+  width: 72%;
+  height: 20px;
+  border-radius: 10px;
+  background: #AE81FF;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider_mode:hover {
+  opacity: 1;
+}
+
+.slider_mode::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  background: #A6E22E;
+  cursor: pointer;
+}
+
+.slider_mode::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  background: #A6E22E;
+  cursor: pointer;
+}
+
+.buttonStyle {
+  width: 72%;
+  height: 25px;
+  background: #AE81FF;
+  opacity: 0.7;
+  outline: none;
+  border: none;
+}
+
+.buttonStyle:hover{
+	opacity: 1;
+}
+
+.dataListStyle{
+	display: inline-flex;
+	width: 77%;
+	justify-content: space-between;
+	color: #FD971F;
+}
+
+</style>
+</head>
+
+<body style="background-color: #272822">
+<div class="centered">
+<h1 style="color: #F8F8F2">Lamp Control</h1>
+
+  <p style="color: #FD971F">Mode</p>
+  <input type="range" min="0" max="2" value="1" class="slider_mode" id="mode" list = "modelist">
+
+<datalist id="modelist" class="dataListStyle">
+	<option value="0" label="SYNC" ></option>
+	<option value="1" label="MAX" ></option>
+	<option value="2" label="NORM" ></option>
+</datalist>
+
+  <p style="color: #FD971F">Intensity</p>
+  <input type="range" min="0" max="1023" value="512" class="slider" id="intensity">
+
+  <p style="color: #FD971F">Temperature</p>
+  <input type="range" min="-1000" max="1000" value="0" class="slider" id="temperature">
+  <br>
+  <br>
+
+</div>
+<script src="scripts.js"></script>
+</body>
+</html>
