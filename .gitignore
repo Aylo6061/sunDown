@@ -1,0 +1,4 @@
+#dont include any actual builds
+**/*.bin
+#dont include my wifi creds
+**/creds.txt
