@@ -29,8 +29,8 @@ function postLightingSettings(intensity, temperature, mode)
 	console.log("temp")
 	console.log(temperature)
 	if(mode == 2){
-		var warm = (((temperature+Cmax))/(2*Cmax)) * intensity
-		var cool = ((2*Cmax-(temperature+Cmax))/(2*Cmax)) * intensity
+		var cool = (((temperature+Cmax))/(2*Cmax)) * intensity
+		var warm = ((2*Cmax-(temperature+Cmax))/(2*Cmax)) * intensity
 	}
 
 	console.log("preval")
