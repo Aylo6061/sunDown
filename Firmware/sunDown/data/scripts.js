@@ -3,8 +3,12 @@ function fixInversion(val)
 	return 1023-Math.ceil(val)
 }
 
-function postLightingSettings(intensity, temperature, mode)
+function postLightingSettings()
 {
+	var intensity =  parseInt(document.getElementById('intensity').value, 10)
+	var temperature = parseInt(document.getElementById("temperature").value, 10)
+	var mode = parseInt(document.getElementById("mode").value, 10)
+
 	var Cmax = 1000 // max color temp
 
 	if(mode == 0){
@@ -26,26 +30,21 @@ function postLightingSettings(intensity, temperature, mode)
 		}
 	}
 	//mode 2 is "normed" intensity mode
-	console.log("temp")
-	console.log(temperature)
 	if(mode == 2){
 		var cool = (((temperature+Cmax))/(2*Cmax)) * intensity
 		var warm = ((2*Cmax-(temperature+Cmax))/(2*Cmax)) * intensity
 	}
 
-	console.log("preval")
-	console.log(warm)
-	console.log(cool)
 	warm = fixInversion(warm)
 	cool = fixInversion(cool)
-	console.log("vals")
+
 	console.log(warm)
 	console.log(cool)
 
 	let xhr = new XMLHttpRequest()
 	xhr.open("POST",'',true)
 	xhr.setRequestHeader("Content-Type","text/plain")
-	xhr.send(JSON.stringify({"cmd":"set", "warm":warm, "cool":cool}))
+	xhr.send(JSON.stringify({"cmd":"set", "warm":warm, "cool":cool, "mode":mode, "intensity":intensity, "temperature":temperature}))
 	
 }
 
@@ -57,28 +56,19 @@ function postLightingMode(mode)
 	xhr.send(JSON.stringify({"cmd":"mode", "mode":mode}))
 }
 
-
-var modeSlider = document.getElementById("mode")
-modeSlider.oninput = function() {
-	console.log(this.value)
-	//eventually send this to the esp
-
-}
-
 var intensitySlider = document.getElementById("intensity")
 intensitySlider.onchange = function() {
-	var int =  parseInt(document.getElementById('intensity').value, 10)
-	var temp = parseInt(document.getElementById("temperature").value, 10)
-	var mode = parseInt(document.getElementById("mode").value, 10)
-	postLightingSettings(int, temp, mode)
+	postLightingSettings()
 }
 
 var temperatureSlider = document.getElementById("temperature")
 temperatureSlider.onchange = function() {
-	var int =  parseInt(document.getElementById('intensity').value, 10)
-	var temp = parseInt(document.getElementById("temperature").value, 10)
-	var mode = parseInt(document.getElementById("mode").value, 10)
-	postLightingSettings(int, temp, mode)
+	postLightingSettings()
+}
+
+var modeSlider = document.getElementById("mode")
+modeSlider.onchange = function() {
+	postLightingSettings()
 }
 
 intensitySlider.ondblclick = function(){
@@ -88,3 +78,21 @@ intensitySlider.ondblclick = function(){
 temperatureSlider.ondblclick = function(){
 	this.value=0
 }
+
+function loadState()
+{
+	let xhr = new XMLHttpRequest()
+	xhr.open("GET",'/status.js',false)
+	xhr.send()
+	if(xhr.readyState == 4 && xhr.status == 200)
+	{
+		console.log(xhr.responseText)
+		state = JSON.parse(xhr.responseText)
+	}
+
+	document.getElementById('mode').value = parseInt(state["mode"],10)
+	document.getElementById('intensity').value = parseInt(state["intensity"],10)
+	document.getElementById('temperature').value = parseInt(state["temperature"],10)
+}
+
+document.addEventListener("load",loadState())

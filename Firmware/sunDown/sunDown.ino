@@ -22,6 +22,14 @@
 
 AsyncWebServer server(80);
 
+struct State {
+  int mode;
+  int intensity;
+  int temperature;
+};
+
+struct State state;
+
 void initSPIFFS() {
   if (!SPIFFS.begin(true)) {
     Serial.println("An error has occurred while mounting SPIFFS");
@@ -54,7 +62,15 @@ void cool_set(int duty)
 }
 
 void setup(void) {
+
+  
   Serial.begin(115200);
+  Serial.println("first things first");
+
+  //reset state
+  state.mode = 1;
+  state.intensity = 512;
+  state.temperature = 0;
   
   for(int i=0; i<6; i++)
   {
@@ -122,6 +138,16 @@ void setup(void) {
     request->send(SPIFFS, "/scripts.js");
   });
 
+  server.on("/status.js", HTTP_GET, [](AsyncWebServerRequest *request) {
+    String jsonStateStr;;
+    StaticJsonDocument<512> jsonState;
+    jsonState["mode"] = state.mode;
+    jsonState["temperature"] = state.temperature;
+    jsonState["intensity"] = state.intensity;
+    serializeJson(jsonState, jsonStateStr);
+    request->send(200, "application/json", jsonStateStr);
+  });
+
   server.on(
     "/lamp",
     HTTP_POST,
@@ -137,6 +163,9 @@ void setup(void) {
                 if(obj["cmd"] == "set"){
                 warm_set(obj["warm"].as<int>());
                 cool_set(obj["cool"].as<int>());
+                state.mode = obj["mode"].as<int>();
+                state.temperature = obj["temperature"].as<int>();
+                state.intensity = obj["intensity"].as<int>();
                 }
 
                 request->send(200, "text/plain", "OK");
