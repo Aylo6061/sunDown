@@ -22,6 +22,13 @@
 
 AsyncWebServer server(80);
 
+// Set your Static IP address
+IPAddress local_IP(10, 0, 0, 184);
+// Set your Gateway IP address
+IPAddress gateway(10, 0, 0, 1);
+
+IPAddress subnet(255, 255, 0, 0);
+
 struct State {
   int mode;
   int intensity;
@@ -97,6 +104,10 @@ void setup(void) {
   ledcAttachPin(WW3, 5);
   
   initSPIFFS();
+  if(!WiFi.config(local_IP, gateway, subnet))
+  {
+    Serial.println("STA Failed to configure");
+  }
 
   File wifiCreds = SPIFFS.open("/creds.txt","r");
   DynamicJsonDocument doc(512U);
