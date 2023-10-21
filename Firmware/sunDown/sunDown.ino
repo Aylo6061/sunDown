@@ -23,7 +23,7 @@
 AsyncWebServer server(80);
 
 // Set your Static IP address
-IPAddress local_IP(10, 0, 0, 184);
+IPAddress local_IP(10, 0, 0, 55);
 // Set your Gateway IP address
 IPAddress gateway(10, 0, 0, 1);
 
