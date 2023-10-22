@@ -6,6 +6,9 @@
   #include <AsyncTCP.h>
 #endif
 
+#include <time.h>
+#include <ESP32Time.h>
+#include "sntp.h"
 #include <ESPAsyncWebServer.h>
 #include <AsyncElegantOTA.h>
 #include <SPIFFS.h>
@@ -21,6 +24,7 @@
 #define WW3 6
 
 AsyncWebServer server(80);
+ESP32Time rtc(0); //new york utc offset
 
 // Set your Static IP address
 IPAddress local_IP(10, 0, 0, 55);
@@ -136,6 +140,8 @@ void setup(void) {
   Serial.print("Connected!!");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  //at this point we should be connected
+
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", "Hi, im a lamp!");
@@ -191,5 +197,26 @@ void setup(void) {
   Serial.println("HTTP server started");
 }
 
+int rtcHour;
+int count =0;
+
 void loop(void) {
+  
+  rtcHour = rtc.getHour(true);
+  Serial.print("rtc: ");
+  Serial.print(rtcHour);
+  if(rtcHour > 8)
+  {
+    all_set(1024);
+    Serial.println(" leds ON!");
+  }
+  else{
+    all_set(0);
+    Serial.println(" leds OFF!");
+  }
+  delay(1000);
+  rtc.setTime(count*3600);
+  count++;
+  
+  
 }
