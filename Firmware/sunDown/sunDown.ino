@@ -198,7 +198,7 @@ void setup(void) {
 }
 
 int rtcHour;
-int count =0;
+//int count =0;
 
 void loop(void) {
   
@@ -215,8 +215,8 @@ void loop(void) {
     Serial.println(" leds OFF!");
   }
   delay(1000);
-  rtc.setTime(count*3600);
-  count++;
+//  rtc.setTime(count*3600);
+//  count++;
   
   
 }
